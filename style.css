@@ -1,0 +1,130 @@
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #050816, #000000);
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+
+/* STAR BACKGROUND */
+body::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.15;
+  animation: moveStars 80s linear infinite;
+}
+
+@keyframes moveStars {
+  from { transform: translateY(0); }
+  to { transform: translateY(-1000px); }
+}
+
+/* SUN */
+.sun {
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, #ffcc00, #ff6600);
+  border-radius: 50%;
+  box-shadow: 0 0 60px orange;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* PLANETS */
+.planet {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.planet:hover {
+  transform: scale(1.2);
+}
+
+/* POSITIONS */
+.venus {
+  top: 25%;
+  left: 30%;
+}
+
+.earth {
+  top: 55%;
+  left: 65%;
+}
+
+.mars {
+  top: 70%;
+  left: 40%;
+}@keyframes moveStars {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-100px);
+  }
+}
+
+.stars, .stars2 {
+  animation: moveStars 60s linear infinite;
+}@keyframes floatPlanet {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.planet {
+  animation: floatPlanet 6s ease-in-out infinite;
+}.planet:hover {
+  transform: scale(1.2);
+  filter: brightness(1.3);
+}.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbit1 {
+  width: 200px;
+  height: 200px;
+}
+
+.orbit2 {
+  width: 320px;
+  height: 320px;
+}
+
+.orbit3 {
+  width: 450px;
+  height: 450px;
+}.venus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  animation: orbit1 8s linear infinite;
+}
+
+.earth {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  animation: orbit2 12s linear infinite;
+}
+
+.mars {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  animation: orbit3 16s linear infinite;
+}

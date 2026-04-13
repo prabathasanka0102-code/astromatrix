@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Solar System</title>
+
+<style>
+body{
+  margin:0;
+  background:black;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+
+/* TITLE */
+h1{
+  margin-top:20px;
+}
+
+/* PLANETS */
+.container{
+  margin-top:40px;
+}
+
+.planet{
+  display:inline-block;
+  margin:25px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.planet:hover{
+  transform:scale(1.1);
+}
+
+.planet img{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+}
+
+.planet p{
+  margin-top:10px;
+}
+
+/* BUTTONS */
+.btn{
+  margin-top:30px;
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🪐 Solar System</h1>
+
+<div class="container">
+
+<!-- EARTH -->
+<div class="planet" onclick="goPlanet('earth.html')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg">
+<p>Earth</p>
+</div>
+
+<!-- VENUS -->
+<div class="planet">
+<img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Venus-real_color.jpg">
+<p>Venus</p>
+</div>
+
+<!-- MARS -->
+<div class="planet" onclick="goPlanet('mars.html')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg">
+<p>Mars</p>
+</div>
+
+</div>
+
+<!-- 🚀 3D BUTTON -->
+<button class="btn" onclick="go3D()">🚀 Open 3D Solar System</button>
+
+<br>
+
+<!-- 🔙 BACK -->
+<button class="btn" onclick="goHome()">⬅ Back to Home</button>
+
+<script>
+
+function go3D(){
+  window.location.href = "solar3d.html";
+}
+
+function goHome(){
+  window.location.href = "index.html";
+}
+
+function goPlanet(page){
+  window.location.href = page;
+}
+
+</script>
+
+</body>
+</html>

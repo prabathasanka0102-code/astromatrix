@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mars</title>
+</head>
+<body style="background:black;color:white;text-align:center;padding-top:100px;">
+  <h1>🔴 Mars</h1>
+  <p>Welcome to Mars page</p>
+</body>
+</html><img src="https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg" class="planet mars" onclick="go('mars')"><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mars - Astro Matrix</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle, #050816, #000);
+      color: white;
+      font-family: Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      text-align: center;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 15px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      width: 300px;
+    }
+
+    img {
+      width: 120px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      color: red;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      background: red;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg">
+    <h1>Mars</h1>
+    <p>Fourth planet from the Sun</p>
+    <p>The Red Planet 🪐</p>
+
+    <button onclick="back()">Back</button>
+  </div>
+
+  <script>
+    function back() {
+      window.location.href = "solar.html";
+    }
+  </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mars - Astro Matrix</title>
+
+  <style>body {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle, #050816, #000);
+      font-family: Arial;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      padding: 30px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      width: 700px;
+    }
+
+    .left img {
+      width: 220px;
+      border-radius: 50%;
+      box-shadow: 0 0 40px red;
+    }
+
+    .right {
+      max-width: 350px;
+    }
+
+    h1 {
+      color: red;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      margin: 10px 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      background: red;
+      color: black;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="left">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg">
+    </div>
+
+    <div class="right">
+      <h1>Mars</h1>
+
+      <div class="section">🪐 Fourth planet from the Sun</div>
+      <div class="section">🔴 Known as the Red Planet</div>
+      <div class="section">❄ Has polar ice caps</div>
+      <div class="section">🚀 Target for future human missions</div>
+
+      <button onclick="back()">Back</button>
+    </div>
+
+  </div>
+
+  <script>
+    function back() {
+      window.location.href = "solar.html";
+    }
+  </script>
+
+</body>
+</html>body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle, #050816, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial;
+  color: white;
+}.card {
+  width: 650px;
+  padding: 30px;
+  display: flex;
+  gap: 30px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 0 40px rgba(0,198,255,0.15);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}

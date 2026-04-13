@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Astro Matrix</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle, #050816, #000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial;
+      color: white;
+    }
+
+    .box {
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 50px;
+      color: #00c6ff;
+      letter-spacing: 4px;
+    }
+
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(90deg, #00c6ff, #7b2ff7);
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <h1>ASTRO MATRIX</h1>
+    <p>Explore the Solar System</p>
+    <button onclick="go()">Enter</button>
+  </div>
+
+  <script>
+    function go() {
+      window.location.href = "solar.html";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Earth</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle, #050816, #000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial;
+      color: white;
+    }
+
+    .card {
+      display: flex;
+      gap: 30px;
+      padding: 30px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      width: 650px;
+    }
+
+    img {
+      width: 200px;
+      border-radius: 50%;
+    }
+
+    h1 { color: #00c6ff; }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #00c6ff;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg">
+
+    <div>
+      <h1>Earth</h1>
+      <p>🌍 Third planet from Sun</p>
+      <p>🧠 Only known life planet</p>
+
+      <button onclick="back()">Back</button>
+    </div>
+  </div>
+
+  <script>
+    function back() {
+      window.location.href = "solar.html";
+    }
+  </script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Earth - Astro Matrix</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle, #050816, #000);
+      font-family: Arial;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      padding: 30px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      width: 700px;
+    }
+
+    .left img {
+      width: 220px;
+      border-radius: 50%;
+      box-shadow: 0 0 40px #00c6ff;
+    }
+
+    .right {
+      max-width: 350px;
+    }
+
+    h1 {
+      color: #00c6ff;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      margin: 10px 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      background: #00c6ff;
+      color: black;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="left">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg">
+    </div>
+
+    <div class="right">
+      <h1>Earth</h1>
+
+      <div class="section">🌍 Third planet from the Sun</div>
+      <div class="section">🧠 Only known planet with life</div>
+      <div class="section">🌡 Average temperature: 15°C</div>
+      <div class="section">🌕 Has 1 natural moon</div>
+
+      <button onclick="back()">Back</button>
+    </div>
+
+  </div>
+
+  <script>
+    function back() {
+      window.location.href = "solar.html";
+    }
+  </script>
+
+</body>
+</html>body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle, #050816, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial;
+  color: white;
+}.card {
+  width: 650px;
+  padding: 30px;
+  display: flex;
+  gap: 30px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 0 40px rgba(0,198,255,0.15);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}img {
+  width: 220px;
+  border-radius: 50%;
+  animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

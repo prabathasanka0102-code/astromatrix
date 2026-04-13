@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Astro Matrix FINAL COMPLETE</title>
+
+<style>
+body{margin:0;overflow:hidden;background:black;font-family:Arial;}
+
+.ui{
+position:absolute;top:10px;left:10px;
+color:white;background:rgba(0,0,0,0.5);
+padding:10px;border-radius:10px;
+font-size:13px;
+}
+
+.hud{
+position:absolute;bottom:10px;left:10px;
+color:white;background:rgba(0,0,0,0.5);
+padding:10px;border-radius:10px;
+font-size:13px;width:380px;
+}
+
+.panel{
+position:absolute;right:20px;top:50%;
+transform:translateY(-50%);
+background:rgba(0,0,0,0.8);
+color:white;
+padding:15px;
+border-radius:12px;
+width:260px;
+display:none;
+}
+
+.back{
+position:absolute;bottom:10px;right:10px;
+background:white;padding:10px;border-radius:8px;cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- UI BUTTONS -->
+<div class="ui">
+<button onclick="saveGame()">💾 Save</button>
+<button onclick="loadGame()">📂 Load</button>
+</div>
+
+<div class="hud" id="hud"></div>
+
+<div class="panel" id="panel">
+<h2 id="pname"></h2>
+<p id="pinfo"></p>
+<p id="pdist"></p>
+<p id="ptemp"></p>
+<p id="pmoons"></p>
+</div>
+
+<div class="back" onclick="goBack()">⬅ Back</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+
+// 🌌 SCENE
+const scene=new THREE.Scene();
+
+// 📷 CAMERA (WIDE + SAFE)
+const camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,30000);
+camera.position.set(0,40,90);
+
+// 🎥 RENDERER
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(innerWidth,innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// 💡 LIGHTS
+scene.add(new THREE.PointLight(0xffffff,2.2));
+scene.add(new THREE.AmbientLight(0xffffff,0.45));
+
+// ☀ SUN
+const sun=new THREE.Mesh(
+new THREE.SphereGeometry(3,32,32),
+new THREE.MeshBasicMaterial({color:0xffcc00})
+);
+scene.add(sun);
+
+// 🪐 INFO SYSTEM
+const infoData=new Map();
+
+// PLANET FUNCTION
+function planet(name,size,color,dist,temp,moons){
+const p=new THREE.Mesh(
+new THREE.SphereGeometry(size,32,32),
+new THREE.MeshStandardMaterial({color})
+);
+
+infoData.set(p,{name,dist,temp,moons});
+return p;
+}
+
+// 🪐 PLANETS
+const mercury=planet("Mercury",0.5,0xaaaaaa,"0.39 AU","430°C","0");
+const venus=planet("Venus",0.8,0xffcc88,"0.72 AU","465°C","0");
+const earth=planet("Earth",0.9,0x3399ff,"1 AU","15°C","1");
+const mars=planet("Mars",0.7,0xff5533,"1.52 AU","-63°C","2");
+
+const jupiter=planet("Jupiter",1.8,0xd2b48c,"5.2 AU","-110°C","95+");
+const saturn=planet("Saturn",1.5,0xf5deb3,"9.5 AU","-140°C","140+");
+const uranus=planet("Uranus",1.2,0x66ccff,"19 AU","-195°C","27");
+const neptune=planet("Neptune",1.1,0x3366ff,"30 AU","-200°C","14");
+
+scene.add(mercury,venus,earth,mars,jupiter,saturn,uranus,neptune);
+
+// 💍 SATURN RING
+const ring=new THREE.Mesh(
+new THREE.RingGeometry(1.8,2.8,64),
+new THREE.MeshStandardMaterial({color:0xffffff,side:THREE.DoubleSide,transparent:true,opacity:0.6})
+);
+saturn.add(ring);
+
+// ☄️ ASTEROIDS
+const asteroids=[];
+for(let i=0;i<100;i++){
+let a=new THREE.Mesh(
+new THREE.SphereGeometry(0.12,8,8),
+new THREE.MeshStandardMaterial({color:0x777777})
+);
+
+a.userData={
+angle:Math.random()*Math.PI*2,
+radius:20+Math.random()*4,
+speed:0.0015+Math.random()*0.001
+};
+
+scene.add(a);
+asteroids.push(a);
+}
+
+// 🚀 SHIP
+const ship=new THREE.Mesh(
+new THREE.ConeGeometry(0.6,1.8,8),
+new THREE.MeshStandardMaterial({color:0xffffff})
+);
+scene.add(ship);
+
+// 👾 ENEMIES
+const enemies=[];
+for(let i=0;i<4;i++){
+let e=new THREE.Mesh(
+new THREE.BoxGeometry(1,1,2),
+new THREE.MeshStandardMaterial({color:0xff0000})
+);
+e.position.set((Math.random()-0.5)*25,0,(Math.random()-0.5)*25);
+scene.add(e);
+enemies.push(e);
+}
+
+// 🔫 LASERS
+const lasers=[];
+const enemyLasers=[];
+
+// 🛡️ SHIELD
+let shield=100;
+
+// CONTROLS
+const keys={};
+
+window.addEventListener("keydown",(e)=>{
+keys[e.key.toLowerCase()]=true;
+if(e.key===" ") shoot();
+});
+
+window.addEventListener("keyup",(e)=>keys[e.key.toLowerCase()]=false);
+
+// 🚀 MOVE
+function moveShip(){
+let speed=0.3;
+if(keys["shift"]) speed=0.45;
+
+if(keys["w"]) ship.position.z-=speed;
+if(keys["s"]) ship.position.z+=speed;
+if(keys["a"]) ship.position.x-=speed;
+if(keys["d"]) ship.position.x+=speed;
+}
+
+// 🔫 SHOOT
+function shoot(){
+const l=new THREE.Mesh(
+new THREE.BoxGeometry(0.1,0.1,1),
+new THREE.MeshBasicMaterial({color:0xff0000})
+);
+l.position.copy(ship.position);
+scene.add(l);
+lasers.push(l);
+}
+
+// 👾 ENEMY SHOOT
+function enemyShoot(e){
+const l=new THREE.Mesh(
+new THREE.BoxGeometry(0.1,0.1,1),
+new THREE.MeshBasicMaterial({color:0x00ffff})
+);
+
+l.position.copy(e.position);
+l.userData.dir=new THREE.Vector3().subVectors(ship.position,e.position).normalize();
+
+scene.add(l);
+enemyLasers.push(l);
+}
+
+// 💥 LASER SYSTEM
+function updateLasers(){
+
+for(let i=lasers.length-1;i>=0;i--){
+let l=lasers[i];
+l.position.z-=1.5;
+
+for(let j=enemies.length-1;j>=0;j--){
+if(l.position.distanceTo(enemies[j].position)<1){
+scene.remove(enemies[j]);
+scene.remove(l);
+enemies.splice(j,1);
+lasers.splice(i,1);
+break;
+}
+}
+}
+
+for(let i=enemyLasers.length-1;i>=0;i--){
+let l=enemyLasers[i];
+l.position.add(l.userData.dir.clone().multiplyScalar(0.7));
+
+if(l.position.distanceTo(ship.position)<1){
+shield-=6;
+scene.remove(l);
+enemyLasers.splice(i,1);
+}
+}
+}
+
+// 👾 AI
+function enemyAI(){
+enemies.forEach(e=>{
+let dir=new THREE.Vector3().subVectors(ship.position,e.position);
+e.position.add(dir.normalize().multiplyScalar(0.04));
+
+if(Math.random()<0.01) enemyShoot(e);
+});
+}
+
+// ☄️ ASTEROIDS
+function updateAsteroids(){
+asteroids.forEach(a=>{
+a.userData.angle+=a.userData.speed;
+a.position.x=Math.cos(a.userData.angle)*a.userData.radius;
+a.position.z=Math.sin(a.userData.angle)*a.userData.radius;
+});
+}
+
+// 🌌 ORBITS
+let t=0;
+
+// CLICK INFO PANEL
+const panel=document.getElementById("panel");
+
+const raycaster=new THREE.Raycaster();
+const mouse=new THREE.Vector2();
+
+window.addEventListener("click",(e)=>{
+mouse.x=(e.clientX/innerWidth)*2-1;
+mouse.y=-(e.clientY/innerHeight)*2+1;
+
+raycaster.setFromCamera(mouse,camera);
+
+const hits=raycaster.intersectObjects(scene.children);
+
+if(hits.length){
+const obj=hits[0].object;
+
+if(infoData.has(obj)){
+const d=infoData.get(obj);
+
+document.getElementById("pname").innerText=d.name;
+document.getElementById("pdist").innerText="Distance: "+d.dist;
+document.getElementById("ptemp").innerText="Temp: "+d.temp;
+document.getElementById("pmoons").innerText="Moons: "+d.moons;
+panel.style.display="block";
+}
+}
+});
+
+// 💾 SAVE / LOAD
+function saveGame(){
+const data={
+x:ship.position.x,
+y:ship.position.y,
+z:ship.position.z,
+shield:shield
+};
+localStorage.setItem("astroSave",JSON.stringify(data));
+alert("Saved 🚀");
+}
+
+function loadGame(){
+const d=JSON.parse(localStorage.getItem("astroSave"));
+if(!d){alert("No save found");return;}
+
+ship.position.set(d.x,d.y,d.z);
+shield=d.shield;
+
+alert("Loaded 🌌");
+}
+
+// AUTO SAVE
+setInterval(()=>{
+saveGame();
+},5000);
+
+// GAME LOOP
+function animate(){
+requestAnimationFrame(animate);
+t+=0.01;
+
+// PLANETS
+mercury.position.set(Math.cos(t*3)*6,0,Math.sin(t*3)*6);
+venus.position.set(Math.cos(t*2)*9,0,Math.sin(t*2)*9);
+earth.position.set(Math.cos(t*1.5)*12,0,Math.sin(t*1.5)*12);
+mars.position.set(Math.cos(t*1.2)*15,0,Math.sin(t*1.2)*15);
+jupiter.position.set(Math.cos(t*0.6)*24,0,Math.sin(t*0.6)*24);
+saturn.position.set(Math.cos(t*0.4)*30,0,Math.sin(t*0.4)*30);
+uranus.position.set(Math.cos(t*0.3)*38,0,Math.sin(t*0.3)*38);
+neptune.position.set(Math.cos(t*0.2)*46,0,Math.sin(t*0.2)*46);
+
+// SYSTEMS
+moveShip();
+enemyAI();
+updateLasers();
+updateAsteroids();
+
+// CAMERA
+camera.position.x+=(ship.position.x-camera.position.x)*0.08;
+camera.position.z+=(ship.position.z+35-camera.position.z)*0.08;
+camera.position.y=35;
+camera.lookAt(ship.position);
+
+// HUD
+document.getElementById("hud").innerHTML=
+`🚀 Move | SPACE Shoot<br>
+👾 Enemies: ${enemies.length}<br>
+🛡️ Shield: ${shield.toFixed(0)}%<br>
+💾 Auto Save ON`;
+
+renderer.render(scene,camera);
+}
+
+animate();
+
+// BACK
+function goBack(){
+window.location.href="solar.html";
+}
+
+// RESIZE
+window.addEventListener("resize",()=>{
+camera.aspect=innerWidth/innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(innerWidth,innerHeight);
+});
+
+</script>
+
+</body>
+</html>
